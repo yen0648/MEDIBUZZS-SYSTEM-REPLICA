@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Clinic Records</title>
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial;
+    background: #fffdf0;
+    padding: 15px;
+    margin: 0;
+}
+
+/* 🔙 BACK BUTTON */
+.back-btn {
+    position: fixed;
+    top: 15px;
+    left: 15px;
+
+    width: 42px;
+    height: 42px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: white;
+    border: 2px solid #007bff;
+    border-radius: 8px;
+
+    text-decoration: none;
+    font-size: 22px;
+    color: #007bff;
+
+    box-shadow: 0 3px 10px rgba(0,0,0,0.15);
+
+    transition: 0.2s;
+}
+
+.back-btn:hover {
+    background: #007bff;
+    color: white;
+}
+
+h2 {
+    text-align: center;
+}
+
+p {
+    margin: 20px auto;
+    max-width: 400px;
+    font-size: 13px;
+    color: #707070;
+    text-align: center;
+}
+
+/* BUTTONS */
+.divbtn {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin: 10px 0;
+}
+
+button {
+    padding: 10px 15px;
+    background: red;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+/* INVENTORY BUTTON */
+.btninv {
+    background-color: #2469b3;
+    color: rgb(255, 255, 31);
+}
+
+/* TABLE WRAPPER */
+.table-container {
+    width: 100%;
+    overflow-x: auto;
+}
+
+/* TABLE (DESKTOP) */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #e6f0ff;
+    min-width: 600px;
+}
+
+th {
+    background: #007bff;
+    color: white;
+    padding: 10px;
+}
+
+td {
+    padding: 10px;
+    border: 1px solid #ccc;
+    text-align: center;
+
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+
+/* 📱 MOBILE FIX */
+@media (max-width: 600px) {
+
+    .table-container {
+        overflow-x: hidden;
+        padding: 0;
+        margin: 0;
+    }
+
+    table {
+        min-width: 100%;
+        border-collapse: separate;
+        border-spacing: 0;
+    }
+
+    table, thead, tbody {
+        display: block;
+        width: 100%;
+    }
+
+    thead {
+        display: none;
+    }
+
+    tr {
+        display: block;
+        background: white;
+
+        margin-bottom: 15px;
+
+        border: 2px solid #007bff;
+        border-radius: 10px;
+
+        overflow: hidden;
+        width: 100%;
+    }
+
+    td {
+        display: block;
+        text-align: left;
+
+        border: none;
+        padding: 10px;
+
+        width: 100%;
+        word-break: break-word;
+        white-space: normal;
+    }
+
+    td::before {
+        font-weight: bold;
+        display: block;
+        color: #007bff;
+        margin-bottom: 3px;
+    }
+
+    td:nth-child(1)::before { content: "Student ID"; }
+    td:nth-child(2)::before { content: "Name"; }
+    td:nth-child(3)::before { content: "Section"; }
+    td:nth-child(4)::before { content: "Reason"; }
+    td:nth-child(5)::before { content: "Phone"; }
+
+    td:nth-child(4) {
+        max-height: 100px;
+        overflow-y: auto;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<!-- 🔙 BACK BUTTON -->
+<a href="index.html" class="back-btn">←</a>
+
+<h2>Clinic Records</h2>    
+
+<p>
+This website is a replication of the “MediBuzz System,” designed to give students a preview of how the school clinic processes and saves student information.
+</p>
+
+<!-- BUTTONS -->
+<div class="divbtn">
+    <button onclick="clearData()">Clear All</button>
+    <button onclick="goToInventory()" class="btninv">Inventory</button>
+</div>
+
+<!-- TABLE -->
+<div class="table-container">
+    <table>
+        <thead>
+            <tr>
+                <th>STUDENT ID</th>
+                <th>Name</th>
+                <th>Section</th>
+                <th>Reason</th>
+                <th>Phone</th>
+            </tr>
+        </thead>
+        <tbody id="tableBody"></tbody>
+    </table>
+</div>
+
+<script>
+function loadData() {
+    const records = JSON.parse(localStorage.getItem("clinicRecords")) || [];
+    const tableBody = document.getElementById("tableBody");
+
+    tableBody.innerHTML = "";
+
+    records.forEach(r => {
+        tableBody.innerHTML += `
+            <tr>
+                <td>${r.studentId}</td>
+                <td>${r.name}</td>
+                <td>${r.section}</td>
+                <td>${r.reason}</td>
+                <td>${r.phone}</td>
+            </tr>
+        `;
+    });
+}
+
+function clearData() {
+    localStorage.removeItem("clinicRecords");
+    loadData();
+}
+
+loadData();
+
+function goToInventory() {
+    window.location.href="inventory.html";
+}
+
+
+</script>
+
+</body>
+</html>
